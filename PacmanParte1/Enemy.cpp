@@ -1,5 +1,8 @@
 #include "Enemy.h"
 
+
+//Los enemigos seran A,V,M
+
 void Enemy::RandomDirection()
 {
 
