@@ -60,7 +60,7 @@ void Enemy::Update(Map* _map)
 	newPosition.X += direction.X;
 	newPosition.Y += direction.Y;
 
-	/*if (newPosition.X < 0)
+	*if (newPosition.X < 0)
 	{
 		newPosition.X = pacman_map.Width - 1;
 	}
