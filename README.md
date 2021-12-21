@@ -1,4 +1,6 @@
-# M05_UF1_1o_P1_00_AlbertoAlegreMora
-![imagen de pacman](https://cloudfront-eu-central-1.images.arcpublishing.com/prisa/U55KB44VIO43FECCAMOE5UAB5Q.jpg)
+# M05_UF1_1o_P1_47_IgnacioSanchezGomez_JonathanPallarueloElvira_SantiagoHijarAnoro
+![imagen de pacman](https://www2.minijuegosgratis.com/v3/games/thumbnails/2399_1.jpg)
 ## Participantes
- - Alberto Alegre Mora
+ - Ignacio Sanchez Gomez
+ - Jonathan Pallaruelo Elvira
+ - Santiago Hijar Anoro
