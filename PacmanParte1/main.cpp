@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "Enemy.h"
+#include "TimeManager.h"
 
 
 /// <summary>
@@ -21,7 +22,7 @@ void Draw();
 
 enum USER_INPUTS { NONE, UP, DOWN, RIGHT, LEFT, QUIT };
 Map pacman_map = Map();
-Enemy enemy1 = Enemy({10,5});
+Enemy enemy1 = Enemy({ pacman_map.spawn_enemy });
 char player_char = 'O';
 int player_x = 1;
 int player_y = 1;
@@ -32,6 +33,7 @@ bool win = false;
 
 int main()
 {
+   
     Setup();
     while (run)
     {
@@ -138,7 +140,20 @@ void Logic()
             win = true;
         }
 
-        enemy1.Update(&pacman_map);
+        Enemy::ENEMY_STATE enemy1state= enemy1.Update(&pacman_map, { (short)player_x,(short)player_y });
+        switch (enemy1state)
+        {
+        
+        case Enemy :: ENEMY_KILLED:
+            player_points + 50;
+            break;
+        case Enemy:: ENEMY_DEAD:
+            player_x = pacman_map.spawn_player.X;
+            player_y = pacman_map.spawn_player.Y;
+            break;
+        
+        }
+       
 
     }
 }
@@ -161,4 +176,8 @@ void Draw()
         ConsoleUtils::Console_SetColor(ConsoleUtils::CONSOLE_COLOR::GREEN);
         std::cout << "Has ganado!" << std::endl;
     }
+    std::cout << "Fotogramas" << TimeManager::getInstance().frameCount<< std:: endl;
+    std::cout << "Time" << TimeManager::getInstance().time << std::endl;
+    std::cout << "DeltaTime" << TimeManager::getInstance().deltaTime << std::endl;
+    TimeManager::getInstance().NextFrame();
 }
