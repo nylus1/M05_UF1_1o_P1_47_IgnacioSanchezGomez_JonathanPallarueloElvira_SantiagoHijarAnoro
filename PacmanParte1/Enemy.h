@@ -20,6 +20,7 @@ public:
 	Enemy();
 	Enemy(COORD _spawn);
 	void Draw();
+	Enemy::ENEMY_STATE Update(Map* _map, COORD _player);
 	void Update(Map* _map);
 };
 
