@@ -51,6 +51,30 @@ void Enemy::Draw()
 	ConsoleUtils::Console_SetColor(foreground, background);
 	std::cout << character;
 }
+/*****************************/
+void Enemy::Update(Map* _map) 
+{
+	RandomDirection();
+	COORD newPosition = position;
+	position.X += direction.X;
+	position.Y += direction.Y;
+	switch (_map->GetTile(newPosition.X, newPosition.Y))
+	{
+	case Map::MAP_TILES::MAP_WALL:
+		newPosition = position;
+		break;
+	}
+	position = newPosition;
+}
+
+/*************************/
+
+
+
+void Enemy::PowerUpPicked()
+{
+	powerup_countdown = TimeManager::getInstance().time + powerrup_countdown_time;
+}
 
 Enemy::ENEMY_STATE Enemy::Update(Map* _map,COORD _player)
 {
@@ -84,9 +108,21 @@ Enemy::ENEMY_STATE Enemy::Update(Map* _map,COORD _player)
 
 	ENEMY_STATE state = ENEMY_STATE::ENEMY_NONE;
 	if (position.X == _player.X && position.Y == _player.Y) {
-
+		if (powerup_countdown <= TimeManager::getInstance().time) {
+			
+			state = ENEMY_STATE::ENEMY_DEAD;
+		}
+		else {
 		position = spawn;
-		ENEMY_STATE::ENEMY_KILLED;
+		state = ENEMY_STATE::ENEMY_KILLED;
+		}
+		
+	}
+	if (powerup_countdown <= TimeManager::getInstance().time) {
+		foreground = foreground_attack;
+	}
+	else {
+		foreground = foreground_powerUp;
 	}
 	return state;
 

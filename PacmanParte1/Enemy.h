@@ -1,6 +1,8 @@
 #pragma once
 #include "ConsoleUtils.h"
 #include "Map.h"
+#include "TimeManager.h"
+
 #include <stdlib.h>
 #include <time.h>
 
@@ -11,8 +13,13 @@ private:
 	COORD position;
 	COORD direction;
 	char character = 'A';
+	float powerup_countdown = 0;
+	const float powerrup_countdown_time = 15;
 	ConsoleUtils::CONSOLE_COLOR foreground = ConsoleUtils::CONSOLE_COLOR::DARK_RED;
-	ConsoleUtils::CONSOLE_COLOR background = ConsoleUtils::CONSOLE_COLOR::DARK_BLUE;
+	ConsoleUtils::CONSOLE_COLOR background = ConsoleUtils::CONSOLE_COLOR::BLACK;
+
+	ConsoleUtils::CONSOLE_COLOR foreground_attack = ConsoleUtils::CONSOLE_COLOR::DARK_RED;
+	ConsoleUtils::CONSOLE_COLOR foreground_powerUp = ConsoleUtils::CONSOLE_COLOR::CYAN;
 	void RandomDirection();
 
 public:
@@ -20,8 +27,10 @@ public:
 	Enemy();
 	Enemy(COORD _spawn);
 	void Draw();
-	Enemy::ENEMY_STATE Update(Map* _map, COORD _player);
 	void Update(Map* _map);
+	void PowerUpPicked();
+	Enemy::ENEMY_STATE Update(Map* _map, COORD _player);
+	//  ******void Update(Map* _map);
 };
 
 

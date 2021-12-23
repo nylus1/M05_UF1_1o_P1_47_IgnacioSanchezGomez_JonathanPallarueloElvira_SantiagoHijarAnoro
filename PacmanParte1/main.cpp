@@ -1,8 +1,7 @@
 #include "Map.h"
 #include "Enemy.h"
 #include "TimeManager.h"
-
-
+#include <vector>
 /// <summary>
 /// Sets the needed variables
 /// </summary>
@@ -22,7 +21,7 @@ void Draw();
 
 enum USER_INPUTS { NONE, UP, DOWN, RIGHT, LEFT, QUIT };
 Map pacman_map = Map();
-Enemy enemy1 = Enemy({ pacman_map.spawn_enemy });
+std::vector<Enemy> enemigos;
 char player_char = 'O';
 int player_x = 1;
 int player_y = 1;
@@ -49,6 +48,16 @@ void Setup()
     srand(time(NULL));
     player_x = pacman_map.spawn_player.X;
     player_y = pacman_map.spawn_player.Y;
+
+    unsigned short enemyNumber = 0;
+    
+    //int enemyNumber = 0;
+    std::cout << "CUantos enemigos quieres?";
+    std::cin >> enemyNumber;
+    for (size_t i = 0; i < enemyNumber; i++)
+    {
+        enemigos.push_back(Enemy(pacman_map.spawn_enemy));
+    }
 }
 
 void Input()
@@ -131,30 +140,38 @@ void Logic()
             player_points++;
             pacman_map.SetTile(player_x_new, player_y_new, Map::MAP_TILES::MAP_EMPTY);
             break;
+        case Map::MAP_TILES::MAP_POWERUP:
+            player_points += 25;
+            for (size_t i = 0; i < enemigos.size(); i++)
+            {
+                enemigos[i].PowerUpPicked();
+            }
+            pacman_map.SetTile(player_x_new, player_y_new, Map::MAP_TILES::MAP_EMPTY);
+            break;
         }
 
         player_y = player_y_new;
         player_x = player_x_new;
+
+        for (size_t i = 0; i < enemigos.size(); i++)
+        {
+            Enemy::ENEMY_STATE enemystate = enemigos[i].Update(&pacman_map, { (short)player_x,(short)player_y });
+            switch (enemystate)
+            {
+            case Enemy::ENEMY_KILLED:
+                player_points += 50;
+                break;
+            case Enemy::ENEMY_DEAD:
+                player_x = pacman_map.spawn_player.X;
+                player_y = pacman_map.spawn_player.Y;
+                break;
+            }   
+        }
+
         if (pacman_map.points <= 0)
         {
             win = true;
         }
-
-        Enemy::ENEMY_STATE enemy1state= enemy1.Update(&pacman_map, { (short)player_x,(short)player_y });
-        switch (enemy1state)
-        {
-        
-        case Enemy :: ENEMY_KILLED:
-            player_points + 50;
-            break;
-        case Enemy:: ENEMY_DEAD:
-            player_x = pacman_map.spawn_player.X;
-            player_y = pacman_map.spawn_player.Y;
-            break;
-        
-        }
-       
-
     }
 }
 
@@ -166,7 +183,10 @@ void Draw()
     ConsoleUtils::Console_SetColor(ConsoleUtils::CONSOLE_COLOR::DARK_YELLOW);
     std::cout << player_char;
 
-    enemy1.Draw();
+    for (size_t i = 0; i < enemigos.size(); i++)
+    {
+        enemigos[i].Draw();
+    }
 
     ConsoleUtils::Console_ClearCharacter({ 0,(short)pacman_map.Height });
     ConsoleUtils::Console_SetColor(ConsoleUtils::CONSOLE_COLOR::CYAN);
@@ -176,8 +196,8 @@ void Draw()
         ConsoleUtils::Console_SetColor(ConsoleUtils::CONSOLE_COLOR::GREEN);
         std::cout << "Has ganado!" << std::endl;
     }
-    std::cout << "Fotogramas" << TimeManager::getInstance().frameCount<< std:: endl;
-    std::cout << "Time" << TimeManager::getInstance().time << std::endl;
-    std::cout << "DeltaTime" << TimeManager::getInstance().deltaTime << std::endl;
+    std::cout << "Fotogramas " << TimeManager::getInstance().frameCount<< std:: endl;
+    std::cout << "Time " << TimeManager::getInstance().time << std::endl;
+    std::cout << "DeltaTime " << TimeManager::getInstance().deltaTime << std::endl;
     TimeManager::getInstance().NextFrame();
 }
