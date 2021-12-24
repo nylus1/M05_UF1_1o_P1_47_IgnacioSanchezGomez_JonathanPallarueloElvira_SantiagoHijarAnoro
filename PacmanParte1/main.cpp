@@ -52,7 +52,7 @@ void Setup()
     unsigned short enemyNumber = 0;
     
     //int enemyNumber = 0;
-    std::cout << "CUantos enemigos quieres?";
+    std::cout << "¿Cuantos enemigos quieres ? ";
     std::cin >> enemyNumber;
     for (size_t i = 0; i < enemyNumber; i++)
     {
@@ -172,6 +172,7 @@ void Logic()
         {
             win = true;
         }
+       
     }
 }
 

@@ -1,8 +1,6 @@
 #include "Enemy.h"
 
 
-//Los enemigos seran A,V,M
-
 void Enemy::RandomDirection()
 {
 
@@ -125,7 +123,5 @@ Enemy::ENEMY_STATE Enemy::Update(Map* _map,COORD _player)
 		foreground = foreground_powerUp;
 	}
 	return state;
-
-
 
 }

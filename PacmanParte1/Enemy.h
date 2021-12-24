@@ -30,7 +30,7 @@ public:
 	void Update(Map* _map);
 	void PowerUpPicked();
 	Enemy::ENEMY_STATE Update(Map* _map, COORD _player);
-	//  ******void Update(Map* _map);
+
 };
 
 
